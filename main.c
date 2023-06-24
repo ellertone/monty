@@ -26,18 +26,12 @@ int main(int ac, char **av)
 		exit(EXIT_FAILURE);
 	}
 
-	while (fgets(buffer, buff_size, fp) != NULL)
+	while ((line_size = getline(&buffer, &buff_size, fp)) != -1)
 	{
-	    line_size = strlen(buffer);
-	    if (buffer[line_size - 1] == '\n')
-	        buffer[line_size - 1] = '\0';
-	    else
-	        buffer[line_size] = '\0';
-	    line_count++;
-	    if (buffer[0] != '#')
-	        is_opcode(buffer, &st, line_count);
+		line_count++;
+		if (buffer[0] != '#')
+			is_opcode(buffer, &st, line_count);
 	}
-
 
 	free(buffer);
 	freestack(&st);
